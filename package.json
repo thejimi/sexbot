@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "discord-inline-reply": "^1.0.3",
+    "discord.js": "^12.5.3",
+    "google-it": "^1.6.4",
+    "wikipedia": "^1.1.9",
+    "wtf_wikipedia": "^10.0.3"
+  }
+}
