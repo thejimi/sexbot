@@ -6,6 +6,7 @@ const fetch = require('node-fetch'); //Import the FETCH API
 const cat = require('./cmd-cat.js')
 const poll = require('./cmd-poll.js')
 const gay = require('./cmd-gay.js')
+const catpion = require('./cmd-catpion.js')
 const nerdreact = require('./react-nerd.js')
 const clownreact = require('./react-clown.js')
 const wreact = require('./react-w.js')
@@ -27,6 +28,10 @@ module.exports = async (message, author, guild, client) => {
 
     if(message.content.includes("cmd gay")){
         return gay(message, author, guild, client)
+    }
+
+    if(message.content.includes("cmd captioncat")){
+        return catpion(message, author, guild, client)
     }
 
     if(message.content.includes("convert image to gif")){

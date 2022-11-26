@@ -15,7 +15,7 @@ module.exports = async (message, author, guild, client) => {
     const embedcommands = new Discord.MessageEmbed()
     .setColor("YELLOW")
     .setAuthor("commands", client.user.displayAvatarURL())
-    .setDescription("sexbot also has some useful commands!\n \n```@sexbot cmd cat - Get a random cat image\n@sexbot cmd gay - Become gay\n@sexbot poll <message> - Create a poll```\n```@sexbot convert image to gif <url>\n@sexbot convert gif to image <url>\n@sexbot convert video to gif```\n```@sexbot react nerd <messagelink>\n@sexbot react clown <messagelink>\n@sexbot react l <messagelink>\n@sexbot react w <messagelink>```")
+    .setDescription("sexbot also has some useful commands!\n \n```@sexbot cmd cat - Get a random cat image\n@sexbot cmd captioncat <text> - Generate a cat image that says something\n@sexbot cmd gay - Become gay\n@sexbot poll <message> - Create a poll```\n```@sexbot convert image to gif <url>\n@sexbot convert gif to image <url>\n@sexbot convert video to gif```\n```@sexbot react nerd <messagelink>\n@sexbot react clown <messagelink>\n@sexbot react l <messagelink>\n@sexbot react w <messagelink>```")
 
     message.lineReplyNoMention(embedhelp)
     message.channel.send(embedcommands)
