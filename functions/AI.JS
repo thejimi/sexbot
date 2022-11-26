@@ -1,10 +1,9 @@
-module.exports = async (message,author) => {
+module.exports = async (message, author) => {
     var msc = message.toLowerCase()
 
     var compliment = require('./detections/compliment.js')
     var insult = require('./detections/insult.js')
     var neutral = require('./detections/neutral.js')
-    var questioncustom = require('./detections/question-custom.js')
     var questionyon = require('./detections/question-yon.js')
     var or = require('./detections/or.js')
     var additionalreaction = require('./detections/additional-reaction.js')

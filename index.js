@@ -1,56 +1,60 @@
-const Discord = require('discord.js')
-require('discord-inline-reply');
-const { Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton, DiscordAPIError } = require('discord.js');
-const client = new Client()
-
+const { Client, Intents, Collection, MessageEmbed, MessageActionRow, MessageButton, DiscordAPIError } = require('discord.js'); //Import the most important functions from discord.js
+const Discord = require('discord.js'); //v12.5.3
+require('discord-inline-reply'); //Import inline replies
+const client = new Client(); //New Discord client
+const botconfig = require('./data/botconfig.json') //Login info for the bot, you will have to provide your own info there
 
 client.on("ready", () => {
-  var channel = client.channels.cache.get('823953803409096806')
-  channel.send('just restarted my braun 🧠🧠]')
-  
-    console.log(`The bot is online!`)
-    client.user.setActivity(`v2! | discord.gg/memee`, {
-      type: "WATCHING"
-    });
+  console.log(`The bot is online!`)
+
+  client.user.setPresence({ status: 'dnd' });
 });
 
-var makeReply = require('./makeReply.js')
+client.on("message", async (message) => {
+    const DetectMessageType = require('./functions/!DetectMessageType.js')
+    const ChatAI = require('./functions/cleverbot.js')
+    const AI = require('./functions/AI.js')
+    const Help = require('./functions/Help.js')
+    
+    if(message.author.id === client.user.id){ 
+        return; //Stop the event if a message is sent by the bot.
+    }
+    if (message.content.includes("@everyone")) {
+        return; //Stop the event if a message includes @everyone ping.
+    }
+    if (message.content.includes("@here")) {
+        return; //Stop the event if a message includes @here ping.
+    }
 
-client.on("message", async message => {
-if(message.author.id === client.user.id){
-  return;
-}
-if(!message.guild){
-  var reply = await makeReply(message.content,message.author.username)
-  message.channel.startTyping();
-setTimeout(function(){
-    message.channel.stopTyping();
-    message.channel.send({content:reply})
-}, 2000);
-return;
-}
-  if (message.content.includes("@everyone")) {
-    return
-  }
-  if (message.content.includes("@here")) {
-    return
-  }
-  if (message.content === "!shelp") {
-    return message.lineReplyNoMention(`> **sexbot help command**\n \n- Commands:\n\`!sservers, !scontribute, !shelp\`\n \n- How to use sexbot?\n*Mention me in a message or dm me to talk.*`)
-  }
-  if (message.content === "!sservers") {
-    return message.lineReplyNoMention(`im in ${client.guilds.cache.size} guilds`)
-  }
-  if (message.content === "!scontribute") {
-    return message.lineReplyNoMention(`Join discord.gg/memee and upload your sexbot reply suggestion.`)
-  }
-  if (message.mentions.has(client.user)) {
-    var reply = await makeReply(message.content,message.author.username)
-    message.channel.startTyping();
-  setTimeout(function(){
-      message.channel.stopTyping();
-      message.lineReply({content:reply})
-  }, 2000);
-}});
+    if (message.content.includes("!shelp")){
+        return Help(message, message.author, message.guild, client)
+    }
 
-client.login("token")
+    if (message.mentions.has(client.user)) { //Continue if a message mentioned the bot.
+        return DetectMessageType(message, message.author, message.guild, client)
+    }
+
+    if (message.channel.name.includes('sexbot-ai')){
+        return ChatAI(message, message.author, message.guild, client)
+    }
+
+    if (message.channel.name.includes('sexbot-chat')){
+        var response = await AI(message.content,message.author.username)
+
+        if(message.guild){
+            message.channel.startTyping();
+            setTimeout(function(){
+                message.channel.stopTyping();
+                return message.lineReply(response)
+            }, 2000);
+        } else {
+            message.channel.startTyping();
+            setTimeout(function(){
+                message.channel.stopTyping();
+                return message.channel.send(response)
+            }, 2000);
+        }
+    }
+});
+
+client.login(botconfig.token)
