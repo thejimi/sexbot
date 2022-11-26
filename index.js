@@ -38,30 +38,12 @@ client.on("message", async (message) => {
         return Help(message, message.author, message.guild, client)
     }
 
-    if (message.mentions.has(client.user)) { //Continue if a message mentioned the bot.
+    if(!message.guild){
         return DetectMessageType(message, message.author, message.guild, client)
     }
 
-    if (message.channel.name.includes('sexbot-ai')){
-        return ChatAI(message, message.author, message.guild, client)
-    }
-
-    if (message.channel.name.includes('sexbot-chat')){
-        var response = await AI(message.content,message.author.username)
-
-        if(message.guild){
-            message.channel.startTyping();
-            setTimeout(function(){
-                message.channel.stopTyping();
-                return message.lineReply(response)
-            }, 2000);
-        } else {
-            message.channel.startTyping();
-            setTimeout(function(){
-                message.channel.stopTyping();
-                return message.channel.send(response)
-            }, 2000);
-        }
+    if (message.mentions.has(client.user)) { //Continue if a message mentioned the bot.
+        return DetectMessageType(message, message.author, message.guild, client)
     }
 });
 
