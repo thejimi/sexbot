@@ -5,10 +5,18 @@ const client = new Client(); //New Discord client
 const botconfig = require('./data/botconfig.json') //Login info for the bot, you will have to provide your own info there
 
 client.on("ready", () => {
-  console.log(`The bot is online!`)
-
-  client.user.setPresence({ status: 'dnd' });
-});
+    console.log(`The bot is online!`)
+  
+      client.user.setActivity(`${client.guilds.cache.size} servers • discord.gg/memee`, {
+        type: "WATCHING"
+      });
+  });
+  
+  client.on("guildCreate", function(guild){
+      client.user.setActivity(`${client.guilds.cache.size} servers • discord.gg/memee`, {
+          type: "WATCHING"
+        });
+  });
 
 client.on("message", async (message) => {
     const DetectMessageType = require('./functions/!DetectMessageType.js')
